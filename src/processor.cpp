@@ -9,5 +9,5 @@ float Processor::Utilization()
   long idleDuration = idle - cachedIdle;
   cachedActive = active;
   cachedIdle = idle;
-  return float (activeDuration) / float (idleDuration);
+  return static_cast<float>(activeDuration) / static_cast<float>(activeDuration + idleDuration);
 }

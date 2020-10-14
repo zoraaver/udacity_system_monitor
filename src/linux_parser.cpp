@@ -33,13 +33,13 @@ string LinuxParser::OperatingSystem() {
 }
 
 string LinuxParser::Kernel() {
-  string os, kernel;
-  string line;
+  string kernel;
   std::ifstream stream(kProcDirectory + kVersionFilename);
   if (stream.is_open()) {
-    std::getline(stream, line);
-    std::istringstream linestream(line);
-    linestream >> os >> kernel;
+    // ignore first two words 'Linux version'
+    for (int i = 0; i < 2; ++i)
+    	stream.ignore(256, ' ');
+    stream >> kernel;
   }
   return kernel;
 }
@@ -94,12 +94,7 @@ long LinuxParser::UpTime()
   long upTime = 0;
   std::ifstream stream(kProcDirectory + kUptimeFilename);
   if (stream.is_open())
-  {
-    std::string line;
-  	std::getline(stream, line);
-  	std::istringstream linestream(line);
-  	linestream >> upTime;
-  }
+  	stream >> upTime;
   return upTime;
 }
 
@@ -267,5 +262,5 @@ long LinuxParser::UpTime(int pid)
     stream >> upTime;
     upTime /= sysconf(_SC_CLK_TCK);
   }
-  return upTime;
+  return UpTime() - upTime;
 }

@@ -20,7 +20,7 @@ void Process::CpuUtilization(long activeTicks, long systemTicks)
 {
   long activeDuration = activeTicks - cachedActive;
   long duration = systemTicks - cachedSystem; 
-  cpuUtilization = float (activeDuration) / float (duration);
+  cpuUtilization = static_cast<float>(activeDuration) / static_cast<float>(duration);
   cachedActive = activeTicks;
   cachedSystem = systemTicks;
 }
